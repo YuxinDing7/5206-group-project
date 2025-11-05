@@ -2,7 +2,7 @@
 
 Structure Flattening in K-Means Optimization
 
-The optimization transforms the data layout from Array of Structures to Structure of Arrays (SoA), specifically flattening the feature vectors into a single contiguous array.
+The optimization transforms the data layout from Array of Structures to Structure of Arrays, specifically flattening the feature vectors into a single contiguous array.
 
 Speedup: 1.25
 
