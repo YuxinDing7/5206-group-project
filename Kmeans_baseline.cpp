@@ -206,10 +206,10 @@ public:
 int main() {
     // Example usage for different datasets (relative paths in repo root)
     std::vector<std::string> datasets = {
-        "D:/nus-s1/CEG5206 Algorithm/group project/5206-group-project/data_N200_D4_K8.json",
-        "D:/nus-s1/CEG5206 Algorithm/group project/5206-group-project/data_N200_D16_K8.json",
-        "D:/nus-s1/CEG5206 Algorithm/group project/5206-group-project/data_N800_D32_K16.json",
-        "D:/nus-s1/CEG5206 Algorithm/group project/5206-group-project/data_N800_D64_K16.json"
+        "data_N200_D4_K8.json",
+        "data_N200_D16_K8.json",
+        "data_N800_D32_K16.json",
+        "data_N800_D64_K16.json"
     };
 
     for(const auto& dataset : datasets) {
@@ -224,7 +224,7 @@ int main() {
             kmeans.cluster(K);
             auto t_end_cluster = std::chrono::high_resolution_clock::now();
             auto cluster_ms = std::chrono::duration_cast<std::chrono::milliseconds>(t_end_cluster - t_start_cluster).count();
-            kmeans.printResults();
+            // kmeans.printResults();
 
             double sse = kmeans.computeSSE();
             double purity = kmeans.computePurity();
