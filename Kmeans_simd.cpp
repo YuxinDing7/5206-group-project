@@ -301,9 +301,9 @@ int main() {
 
             int K = (dataset.find("N200") != std::string::npos) ? 8 : 16;
 
-            // Allow early convergence; keep a generous upper bound
-            int minIters = 0;
-            int maxIters = 40000;
+            // In Kmeans_simd.cpp, change lines 305-306 to match baseline:
+            int minIters = (dataset.find("N200") != std::string::npos) ? 16000 : 12000;
+            int maxIters = std::max(4 * minIters, 40000);
 
             auto t_start_cluster = std::chrono::high_resolution_clock::now();
             kmeans.cluster(K, /*max_iterations=*/maxIters, /*min_iterations=*/minIters);

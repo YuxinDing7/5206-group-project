@@ -1,0 +1,85 @@
+compile the SIMD-optimized versions (width 4/8/16)
+ ======================== run SIMD w4 ==========================
+
+Processing data_N200_D4_K8.json
+SSE (inertia): 740.436442
+Purity: 1.000000
+Load time: 2 ms
+Clustering time: 833 ms (833740 us)
+
+Processing data_N200_D16_K8.json
+SSE (inertia): 12139.414786
+Purity: 0.875000
+Load time: 5 ms
+Clustering time: 1747 ms (1747662 us)
+
+Processing data_N800_D32_K16.json
+SSE (inertia): 150920.355202
+Purity: 0.812500
+Load time: 39 ms
+Clustering time: 14702 ms (14702570 us)
+
+Processing data_N800_D64_K16.json
+SSE (inertia): 234824.301038
+Purity: 0.875000
+Load time: 81 ms
+Clustering time: 26330 ms (26330948 us)
+real 43.75
+user 43.73
+sys 0.00
+ ======================== run SIMD w8 ==========================
+
+Processing data_N200_D4_K8.json
+SSE (inertia): 2513.148962
+Purity: 0.750000
+Load time: 2 ms
+Clustering time: 915 ms (915935 us)
+
+Processing data_N200_D16_K8.json
+SSE (inertia): 29695.019311
+Purity: 0.625000
+Load time: 5 ms
+Clustering time: 1919 ms (1919640 us)
+
+Processing data_N800_D32_K16.json
+SSE (inertia): 214077.865138
+Purity: 0.750000
+Load time: 46 ms
+Clustering time: 14798 ms (14798200 us)
+
+Processing data_N800_D64_K16.json
+SSE (inertia): 338649.090822
+Purity: 0.812500
+Load time: 79 ms
+Clustering time: 24575 ms (24575659 us)
+real 42.34
+user 42.34
+sys 0.00
+ ======================== run SIMD w16 ==========================
+
+Processing data_N200_D4_K8.json
+SSE (inertia): 2436.029362
+Purity: 0.750000
+Load time: 2 ms
+Clustering time: 1013 ms (1013405 us)
+
+Processing data_N200_D16_K8.json
+SSE (inertia): 20107.905795
+Purity: 0.750000
+Load time: 5 ms
+Clustering time: 1823 ms (1823451 us)
+
+Processing data_N800_D32_K16.json
+SSE (inertia): 192890.823075
+Purity: 0.750000
+Load time: 46 ms
+Clustering time: 15361 ms (15361229 us)
+
+Processing data_N800_D64_K16.json
+SSE (inertia): 289536.433049
+Purity: 0.812500
+Load time: 72 ms
+Clustering time: 25625 ms (25625906 us)
+real 43.95
+user 43.95
+sys 0.00

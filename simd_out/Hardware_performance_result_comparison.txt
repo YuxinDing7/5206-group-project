@@ -1,0 +1,57 @@
+Performance counter stats for './kmeans':
+
+          61200119      cache-references:u                                          
+          15945905      cache-misses:u            #   26.055 % of all cache refs    
+      294480494664      cycles:u                                                    
+      916309772154      instructions:u            #    3.11  insn per cycle         
+       89661374532      branch-instructions:u                                       
+
+      95.647967284 seconds time elapsed
+
+      95.631389000 seconds user
+       0.012032000 seconds sys
+
+
+
+ Performance counter stats for './kmeans_simd_w4':
+
+          46580100      cache-references:u                                          
+          10940309      cache-misses:u            #   23.487 % of all cache refs    
+      174823845375      cycles:u                                                    
+      382021803869      instructions:u            #    2.19  insn per cycle         
+       31717937977      branch-instructions:u                                       
+
+      59.667409975 seconds time elapsed
+
+      59.658723000 seconds user
+       0.000000000 seconds sys
+
+
+
+ Performance counter stats for './kmeans_simd_w8':
+
+          37510796      cache-references:u                                          
+           8432904      cache-misses:u            #   22.481 % of all cache refs    
+      174361784404      cycles:u                                                    
+      382809289923      instructions:u            #    2.20  insn per cycle         
+       30002632265      branch-instructions:u                                       
+
+      58.456623200 seconds time elapsed
+
+      58.441622000 seconds user
+       0.008018000 seconds sys
+
+
+
+ Performance counter stats for './kmeans_simd_w16':
+
+          69279268      cache-references:u                                          
+          19404319      cache-misses:u            #   28.009 % of all cache refs    
+      177507610589      cycles:u                                                    
+      385865883111      instructions:u            #    2.17  insn per cycle         
+       29047390378      branch-instructions:u                                       
+
+      66.733008345 seconds time elapsed
+
+      66.721901000 seconds user
+       0.004019000 seconds sys
