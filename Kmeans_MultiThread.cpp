@@ -275,10 +275,13 @@ public:
 
 int main() {
     std::vector<std::string> datasets = {
-        "D:\\nus-s1\\CEG5206 Algorithm\\group project\\5206-group-project\\data_N200_D4_K8.json",
-        "D:\\nus-s1\\CEG5206 Algorithm\\group project\\5206-group-project\\data_N200_D16_K8.json",
-        "D:\\nus-s1\\CEG5206 Algorithm\\group project\\5206-group-project\\data_N800_D32_K16.json",
-        "D:\\nus-s1\\CEG5206 Algorithm\\group project\\5206-group-project\\data_N800_D64_K16.json"
+
+        // "data_N200_D4_K8.json",
+        // "data_N200_D16_K8.json",
+        // "data_N800_D32_K16.json",
+        // "data_N800_D64_K16.json"
+        // "data_N200000_D4_K8.json"
+        "data_N500000_D4_K8.json"
     };
 
     for (const auto& dataset : datasets) {
@@ -292,8 +295,8 @@ int main() {
             auto t_end_load = std::chrono::high_resolution_clock::now();
 
             int K = (dataset.find("N200") != std::string::npos) ? 8 : 16;
-            int minIters = (dataset.find("N200") != std::string::npos) ? 16000 : 12000;
-            int maxIters = std::max(4 * minIters, 40000);
+            int minIters = (dataset.find("N200") != std::string::npos) ? 160 : 120;
+            int maxIters = std::max(4 * minIters, 400);
 
             std::cout << "Number of threads available: " << kmeans.getNumThreads() << "\n\n";
 
