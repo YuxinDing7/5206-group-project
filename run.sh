@@ -1,8 +1,12 @@
 #!/bin/bash
 
-# echo "compile the base of final project"
-# g++ -std=c++11 -O0 -fno-inline Kmeans_Base_extended.cpp -o kmeans 
-# time -p ./kmeans
+echo "compile the base of final project"
+
+echo "Kmeans struct optimize here: "
+g++ -std=c++11 -O3 -fno-inline Kmeans_Base_extended.cpp -o kmeans_base -I/opt/homebrew/include
+time -p ./kmeans_base
+g++ -std=c++11 -O3 -fno-inline Kmeans_struct_optimize.cpp -o kmeans_optimize -I/opt/homebrew/include
+time -p ./kmeans_optimize
 
 
 echo ""
@@ -19,3 +23,10 @@ echo " ======================== run SIMD w8 =========================="
 time -p ./kmeans_simd_w8
 echo " ======================== run SIMD w16 =========================="
 time -p ./kmeans_simd_w16
+
+
+echo "Kmeans MultiThread optimize here: "
+g++ -std=c++11 -O3  -fno-inline -fopenmp \
+  -I/opt/homebrew/include -L/opt/homebrew/lib  \
+  Kmeans_MultiThread.cpp -o kmeans_omp
+time -p ./kmeans_omp
