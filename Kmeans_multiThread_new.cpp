@@ -33,6 +33,7 @@ private:
     std::vector<Point> points;
     std::vector<std::vector<double>> centroids;
     int num_threads = 0;
+    int iteration;
 
     double calculateDistanceSquared(const std::vector<double>& a, const std::vector<double>& b) const {
         double sum = 0.0;
@@ -44,8 +45,7 @@ private:
     }
 
     void initializeCentroids() {
-        std::random_device rd;
-        std::mt19937 gen(rd());              
+        std::mt19937 gen(42); // Fixed seed for reproducibility          
         std::uniform_int_distribution<> dis(0, N - 1);
 
         centroids.resize(K, std::vector<double>(D));
@@ -120,8 +120,7 @@ public:
         initializeCentroids();
 
         auto t_start = std::chrono::high_resolution_clock::now();
-
-        for (int iteration = 0; iteration < max_iterations; ++iteration) {
+        for (iteration = 0; iteration < max_iterations; ++iteration) {
             bool changed = false;
 
             for (int i = 0; i < N; i++) {
@@ -153,7 +152,9 @@ public:
                 }
             }
 
-            if (!changed) break;
+            if (!changed) {
+                break;
+            }
         }
 
         auto t_end = std::chrono::high_resolution_clock::now();
@@ -169,7 +170,7 @@ public:
 
         auto t_start = std::chrono::high_resolution_clock::now();
 
-        for (int iteration = 0; iteration < max_iterations; ++iteration) {
+        for (iteration = 0; iteration < max_iterations; ++iteration) {
             bool changed = false;
 
             #pragma omp parallel for shared(changed)
@@ -226,9 +227,10 @@ public:
                 }
             }
 
-            if (!changed) break;
+            if (!changed) {
+                break;
+            }
         }
-
         auto t_end = std::chrono::high_resolution_clock::now();
         return std::chrono::duration_cast<std::chrono::microseconds>(t_end - t_start).count();
     }
@@ -244,28 +246,52 @@ public:
 
     int getN() const { return N; }
     int getD() const { return D; }
+    int getIteration() const { return iteration; }
+
+    // Purity: requires ground-truth labels (returns -1.0 if absent)
+    double computePurity() const {
+        bool has_gt = false;
+        for (const auto& p : points) if (p.ground_truth != -1) { has_gt = true; break; }
+        if (!has_gt) return -1.0;
+
+        std::vector<std::unordered_map<int, int>> counts(K);
+        for (const auto& p : points) {
+            if (p.cluster < 0 || p.cluster >= K) continue;
+            if (p.ground_truth == -1) continue;
+            counts[p.cluster][p.ground_truth]++;
+        }
+
+        int sum_max = 0;
+        for (int c = 0; c < K; ++c) {
+            int mx = 0;
+            for (const auto& kv : counts[c]) mx = std::max(mx, kv.second);
+            sum_max += mx;
+        }
+        return static_cast<double>(sum_max) / static_cast<double>(N);
+    }
 };
 
 int main() {
     std::vector<std::string> datasets = {
         "D:\\nus-s1\\CEG5206 Algorithm\\group project\\5206-group-project\\data_N200_D4_K8.json",
-        //"data_N200_D16_K8.json",
+        //"D:\\nus-s1\\CEG5206 Algorithm\\group project\\5206-group-project\\data_N200_D16_K8.json",
         "D:\\nus-s1\\CEG5206 Algorithm\\group project\\5206-group-project\\data_N800_D32_K16.json",
         //"data_N800_D64_K16.json"
         "D:\\nus-s1\\CEG5206 Algorithm\\group project\\5206-group-project\\data_N200000_D4_K8.json",
         //"D:\\nus-s1\\CEG5206 Algorithm\\group project\\5206-group-project\\data_N500000_D4_K8.json",
     };
 
-    std::vector<int> thread_counts = {1, 2, 4, 8};
+    std::vector<int> thread_counts = {2, 4, 8};
 
     // CSV
     std::ofstream csv_file("benchmark_results.csv");
-    csv_file << "Dataset,N,D,K,Single_Thread_us,";
+    csv_file << "Dataset,N,D,K,Single_Thread_us,Single_Thread_SSE,Single_Thread_Purity,";
     for (int t : thread_counts) {
         csv_file << "OpenMP_" << t << "T_us,";
-    }
-    for (int t : thread_counts) {
         csv_file << "Speedup_" << t << "T,";
+        csv_file << "SSE_" << t << "T,";
+        csv_file << "Purity_" << t << "T,";
+        csv_file << "Iterations_" << t << "T,";
     }
     csv_file << "\n";
 
@@ -281,23 +307,35 @@ int main() {
         try {
             KMeansComprehensive kmeans(dataset);
             
-            int K = (dataset.find("N200") != std::string::npos) ? 8 : 16;
-            int max_iters = (dataset.find("N200") != std::string::npos) ? 100 : 100;
+            int K = 0;
+            if(dataset.find("K8") != std::string::npos)
+                K = 8;
+            else if(dataset.find("K16") != std::string::npos)
+                K = 16;
+            else
+                throw std::runtime_error("Cannot determine K from filename.");
+            int max_iters = 300;
 
             // Single-thread benchmark
             long long single_time = kmeans.clusterSingleThread(K, max_iters);
             double sse = kmeans.computeSSE();
+            double purity = kmeans.computePurity();
+            int iterations = kmeans.getIteration();
 
             std::cout << std::fixed << std::setprecision(2);
             std::cout << "Single-threaded:  " << single_time << " us\n";
-            std::cout << "SSE:              " << sse << "\n\n";
+            std::cout << "SSE:              " << sse << "\n";
+            std::cout << "Purity:           " << purity << "\n";
+            std::cout << "Iterations:       " << iterations << "\n\n";
 
             csv_file << dataset.substr(0, dataset.find(".json")) << ","
                      << kmeans.getN() << "," << kmeans.getD() << "," << K << ","
-                     << single_time << ",";
-
+                     << single_time << "," << sse << "," << purity << "," << iterations << ",";
             std::vector<long long> omp_times;
             std::vector<double> speedups;
+            std::vector<double> sse_values;
+            std::vector<double> purity_values;
+            std::vector<int> iterations_values;
 
             // Multi-thread OpenMP benchmark
             std::cout << "OpenMP Results:\n";
@@ -309,9 +347,19 @@ int main() {
                 double speedup = static_cast<double>(single_time) / omp_time;
                 speedups.push_back(speedup);
 
+                double omp_sse = kmeans_omp.computeSSE();
+                sse_values.push_back(omp_sse);
+
+                double omp_purity = kmeans_omp.computePurity();
+                purity_values.push_back(omp_purity);
+
                 std::cout << "  " << std::setw(2) << t << " threads: " 
                           << std::setw(10) << omp_time << " us  (Speedup: " 
-                          << std::setw(6) << speedup << "x)\n";
+                          << std::setw(6) << speedup << "x)" << std::setw(6)
+                          << ", SSE: " << omp_sse << std::setw(6)
+                          << ", Purity: " << omp_purity << std::setw(6)
+                          << ", Iterations: " << kmeans_omp.getIteration() << std::setw(6)
+                          << "\n";
 
                 csv_file << omp_time << ",";
             }
@@ -319,6 +367,15 @@ int main() {
             // Add speedups to CSV
             for (double s : speedups) {
                 csv_file << s << ",";
+            }
+            for (double sse : sse_values) {
+                csv_file << sse << ",";
+            }
+            for (double purity : purity_values) {
+                csv_file << purity << ",";
+            }
+            for (int iter : iterations_values) {
+                csv_file << iter << ",";
             }
             csv_file << "\n";
 
