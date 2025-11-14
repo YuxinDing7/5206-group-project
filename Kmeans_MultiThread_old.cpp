@@ -275,12 +275,11 @@ public:
 
 int main() {
     std::vector<std::string> datasets = {
-
-        // "data_N200_D4_K8.json",
-        // "data_N200_D16_K8.json",
-        // "data_N800_D32_K16.json",
-        // "data_N800_D64_K16.json"
-        // "data_N200000_D4_K8.json"
+        "data_N200_D4_K8.json",
+        "data_N200_D16_K8.json",
+        "data_N800_D32_K16.json",
+        "data_N800_D64_K16.json"
+        "data_N200000_D4_K8.json"
         "data_N500000_D4_K8.json"
     };
 

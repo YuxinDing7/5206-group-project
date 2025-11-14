@@ -1,0 +1,4 @@
+Dataset,N,D,K,Single_Thread_us,OpenMP_1T_us,OpenMP_2T_us,OpenMP_4T_us,OpenMP_8T_us,Speedup_1T,Speedup_2T,Speedup_4T,Speedup_8T,
+D:\nus-s1\CEG5206 Algorithm\group project\5206-group-project\data_N200_D4_K8,200,4,8,587,730,453,2093,916,0.80411,1.29581,0.280459,0.64083,
+D:\nus-s1\CEG5206 Algorithm\group project\5206-group-project\data_N800_D32_K16,800,32,16,28672,16551,16393,15557,25318,1.73234,1.74904,1.84303,1.13247,
+D:\nus-s1\CEG5206 Algorithm\group project\5206-group-project\data_N200000_D4_K8,200000,4,8,6342298,9280420,467793,9141974,9601343,0.683406,13.5579,0.693756,0.660564,

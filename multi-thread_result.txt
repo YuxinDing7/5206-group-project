@@ -1,0 +1,36 @@
+═══════════════════════════════════════════════════════════════════════════
+K-means Algorithm Testing (Multi-thread)
+═══════════════════════════════════════════════════════════════════════════
+
+Processing D:\nus-s1\CEG5206 Algorithm\group project\5206-group-project\data_N200_D4_K8.json
+───────────────────────────────────────────────────────────────────────────
+Single-threaded:  587 us
+SSE:              1077.72
+
+OpenMP Results:
+   1 threads:        730 us  (Speedup:   0.80x)
+   2 threads:        453 us  (Speedup:   1.30x)
+   4 threads:       2093 us  (Speedup:   0.28x)
+   8 threads:        916 us  (Speedup:   0.64x)
+
+Processing D:\nus-s1\CEG5206 Algorithm\group project\5206-group-project\data_N800_D32_K16.json
+───────────────────────────────────────────────────────────────────────────
+Single-threaded:  28672 us
+SSE:              272273.52
+
+OpenMP Results:
+   1 threads:      16551 us  (Speedup:   1.73x)
+   2 threads:      16393 us  (Speedup:   1.75x)
+   4 threads:      15557 us  (Speedup:   1.84x)
+   8 threads:      25318 us  (Speedup:   1.13x)
+
+Processing D:\nus-s1\CEG5206 Algorithm\group project\5206-group-project\data_N200000_D4_K8.json
+───────────────────────────────────────────────────────────────────────────
+Single-threaded:  6342298 us
+SSE:              1257376.66
+
+OpenMP Results:
+   1 threads:    9280420 us  (Speedup:   0.68x)
+   2 threads:     467793 us  (Speedup:  13.56x)
+   4 threads:    9141974 us  (Speedup:   0.69x)
+   8 threads:    9601343 us  (Speedup:   0.66x)
