@@ -1,0 +1,58 @@
+\n=== perf stat for base (repeats=3) ===
+
+ Performance counter stats for 'taskset -c 0-7 ./kmeans_base data_N800_D32_K16.json' (3 runs):
+
+          39182377      cycles:u                                                                ( +-  1.36% )
+         110867731      instructions:u                   #    2.83  insn per cycle              ( +-  0.00% )
+            107612      cache-references:u                                                      ( +- 16.18% )
+             31954      cache-misses:u                   #   29.69% of all cache refs           ( +-  7.29% )
+          22458929      branches:u                                                              ( +-  0.00% )
+            118795      branch-misses:u                  #    0.53% of all branches             ( +-  0.33% )
+
+          0.028413 +- 0.000892 seconds time elapsed  ( +-  3.14% )
+
+\n=== perf stat for multi (repeats=3) ===
+
+ Performance counter stats for 'taskset -c 0-7 ./kmeans_multi data_N800_D32_K16.json' (3 runs):
+
+         779731231      cycles:u                                                                ( +- 45.67% )
+         242446869      instructions:u                   #    0.31  insn per cycle              ( +-  6.38% )
+            347821      cache-references:u                                                      ( +-  3.45% )
+             84642      cache-misses:u                   #   24.33% of all cache refs           ( +- 13.61% )
+          52502389      branches:u                                                              ( +-  8.42% )
+            230985      branch-misses:u                  #    0.44% of all branches             ( +-  3.32% )
+
+            0.1005 +- 0.0368 seconds time elapsed  ( +- 36.63% )
+
+\n=== Detailed cache events (base) ===
+
+ Performance counter stats for 'taskset -c 0-7 ./kmeans_base data_N800_D32_K16.json' (3 runs):
+
+          30682966      L1-dcache-loads:u                                                       ( +-  0.00% )
+            168817      L1-dcache-load-misses:u          #    0.55% of all L1-dcache accesses   ( +-  3.78% )
+   <not supported>      LLC-loads:u                                                           
+   <not supported>      LLC-load-misses:u                                                     
+          30682966      dTLB-loads:u                                                            ( +-  0.00% )
+              8774      dTLB-load-misses:u               #    0.03% of all dTLB cache accesses  ( +-  7.73% )
+
+           0.03401 +- 0.00363 seconds time elapsed  ( +- 10.68% )
+
+\n=== Detailed cache events (multi) ===
+
+ Performance counter stats for 'taskset -c 0-7 ./kmeans_multi data_N800_D32_K16.json' (3 runs):
+
+          61137943      L1-dcache-loads:u                                                       ( +-  1.15% )
+            293330      L1-dcache-load-misses:u          #    0.48% of all L1-dcache accesses   ( +-  2.71% )
+   <not supported>      LLC-loads:u                                                           
+   <not supported>      LLC-load-misses:u                                                     
+          61137943      dTLB-loads:u                                                            ( +-  1.15% )
+             16366      dTLB-load-misses:u               #    0.03% of all dTLB cache accesses  ( +-  5.66% )
+
+           0.06546 +- 0.00353 seconds time elapsed  ( +-  5.39% )
+
+\n=== perf record (base) ===
+[ perf record: Woken up 1 times to write data ]
+[ perf record: Captured and wrote 0.003 MB perf_base.data (6 samples) ]
+\n=== perf record (multi) ===
+[ perf record: Woken up 1 times to write data ]
+[ perf record: Captured and wrote 0.007 MB perf_multi.data (47 samples) ]
